@@ -1,5 +1,6 @@
 module Utils where
 
+import Data.List (sort)
 import Data.Bits (shift, (.&.))
 
 untilStable :: (Eq a) => (a -> a) -> a -> a
@@ -55,7 +56,14 @@ slice start end s = take (end - start + 1) (drop start s)
 enumerated :: [a] -> [(Int, a)]
 enumerated = zip [0..]
 
+indices :: [a] -> [Int]
 indices s = take (length s) [0..]
+
+removeElementAt :: Int -> [a] -> [a]
+removeElementAt removeIndex s = map (s !!) $ filter (/= removeIndex) (indices s)
+
+isSorted :: (Ord a) => [a] -> Bool 
+isSorted s = s `elem` [sort s, reverse $ sort s]
 
 -- coordinates
 
