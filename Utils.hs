@@ -2,6 +2,7 @@ module Utils where
 
 import Data.List (sort)
 import Data.Bits (shift, (.&.))
+import Text.Read (readMaybe)
 
 untilStable :: (Eq a) => (a -> a) -> a -> a
 untilStable fn = until (\x -> fn x == x) fn
@@ -11,6 +12,9 @@ untilStable fn = until (\x -> fn x == x) fn
 
 readInt :: String -> Int
 readInt s = read s :: Int
+
+readMaybeInt :: String -> Maybe Int
+readMaybeInt s = readMaybe s :: Maybe Int
 
 firstAndLast :: [a] -> [a]
 firstAndLast [] = []
@@ -34,6 +38,9 @@ splitByEmptyLines = foldl cb []
                 | null acc = [[l]]
                 | otherwise = init acc ++ [last acc ++ [l]]
 
+substringIndices :: String -> String -> [Int]
+substringIndices str substr = filter (\i -> slice i (i+(length substr - 1)) str == substr) $ take (length str - length substr - 2) (indices str)
+
 -- Tuples
 
 reverseTuple :: (a, b) -> (b, a)
@@ -44,6 +51,10 @@ tuplify2 [x,y] = (x,y)
 
 tuplify3 :: [a] -> (a,a,a)
 tuplify3 [x,y,z] = (x,y,z)
+
+unwrapTuple2 :: (Maybe a, Maybe b) -> Maybe (a, b)
+unwrapTuple2 (Just a, Just b) = Just (a, b)
+unwrapTuple2 _ = Nothing
 
 mapTuple :: (a -> b) -> (a, a) -> (b, b)
 mapTuple f (a1, a2) = (f a1, f a2)
