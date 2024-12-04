@@ -73,7 +73,7 @@ indices s = take (length s) [0..]
 removeElementAt :: Int -> [a] -> [a]
 removeElementAt removeIndex s = map (s !!) $ filter (/= removeIndex) (indices s)
 
-isSorted :: (Ord a) => [a] -> Bool 
+isSorted :: (Ord a) => [a] -> Bool
 isSorted s = s `elem` [sort s, reverse $ sort s]
 
 -- coordinates
@@ -86,6 +86,16 @@ adjacentCoordinates (x, y) = [(x + dx, y + dy) | dx <- [-1,0,1], dy <- [-1,0,1]]
 
 getAtCoordinate :: [[a]] -> (Int, Int) -> a
 getAtCoordinate grid (x, y) = grid !! y !! x
+
+maybeGetAtCoordinate :: [[a]] -> (Int, Int) -> Maybe a
+maybeGetAtCoordinate grid (x,y)
+        | isValidCoordinate grid (x,y) = Just (getAtCoordinate grid (x,y))
+        | otherwise = Nothing
+        
+isValidCoordinate :: [[a]] -> (Int, Int) -> Bool
+isValidCoordinate grid (x,y) = x >= 0 && x < cols && y >= 0 && y < rows
+        where rows = length grid
+              cols = if rows > 0 then length (head grid) else 0
 
 gridCoordinates :: [[a]] -> [(Int, Int)]
 gridCoordinates grid = [(x, y) | y <- [0..length grid - 1], x <- [0..length (head grid)-1]]
