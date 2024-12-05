@@ -3,6 +3,7 @@ module Utils where
 import Data.List (sort)
 import Data.Bits (shift, (.&.))
 import Text.Read (readMaybe)
+import qualified Data.Map as Map
 
 untilStable :: (Eq a) => (a -> a) -> a -> a
 untilStable fn = until (\x -> fn x == x) fn
@@ -76,6 +77,8 @@ removeElementAt removeIndex s = map (s !!) $ filter (/= removeIndex) (indices s)
 isSorted :: (Ord a) => [a] -> Bool
 isSorted s = s `elem` [sort s, reverse $ sort s]
 
+-- median :: [int]
+
 -- coordinates
 
 areAdjacent :: (Int, Int) -> (Int, Int) -> Bool
@@ -99,7 +102,6 @@ isValidCoordinate grid (x,y) = x >= 0 && x < cols && y >= 0 && y < rows
 
 gridCoordinates :: [[a]] -> [(Int, Int)]
 gridCoordinates grid = [(x, y) | y <- [0..length grid - 1], x <- [0..length (head grid)-1]]
-
 
 -- Bits
 
