@@ -78,7 +78,7 @@ removeElementAt removeIndex s = map (s !!) $ filter (/= removeIndex) (indices s)
 isSorted :: (Ord a) => [a] -> Bool
 isSorted s = s `elem` [sort s, reverse $ sort s]
 
--- coordinates
+-- 2D lists
 
 areAdjacent :: (Int, Int) -> (Int, Int) -> Bool
 areAdjacent (x0, y0) (x1, y1) = abs (x0 - x1) <= 1 && abs (y0 - y1) <= 1
@@ -102,7 +102,7 @@ isValidCoordinate grid (x,y) = x >= 0 && x < cols && y >= 0 && y < rows
 getCoordinates :: [[a]] -> [(Int, Int)]
 getCoordinates grid = [(x, y) | y <- [0..length grid - 1], x <- [0..length (head grid)-1]]
 
--- coordinates (bytestrings)
+-- 2D lists (bytestrings)
 
 atCoordinateBS :: [B.ByteString] -> (Int, Int) -> Char
 atCoordinateBS grid (x, y) = BC.index (grid !! y) x
@@ -128,3 +128,15 @@ filterCoordinatesBS grid elems = filter (\(x, y) -> atCoordinateBS grid (x, y) `
 
 isBitSet :: Int -> Int -> Bool
 isBitSet number position = (number .&. (1 `shift` position)) /= 0
+
+-- Combinatorics
+
+-- https://hackage.haskell.org/package/combinatorial-0.1.1/docs/Combinatorics.html
+variateRep :: Int -> [a] -> [[a]]
+variateRep n x =
+   if n<0 then [] else nest n (\y -> concatMap (\z -> map (z:) y) x) [[]]
+
+-- applies function N times
+nest :: Int -> (a -> a) -> a -> a
+nest 0 _ x = x
+nest n f x = f (nest (n-1) f x)
