@@ -18,8 +18,8 @@ isEquationValid :: [Operation] -> (Int, [Int]) -> Bool
 isEquationValid ops (val, nums) = val `elem` calculatePossibleExpressions nums ops
 
 calculatePossibleExpressions :: [Int] -> [Operation] -> [Int]
-calculatePossibleExpressions nums ops = map compute $ getPossibleExpressions nums
-    where   compute = foldl (\acc (op, x) -> doOp op acc x) (head nums)
+calculatePossibleExpressions nums ops = map calculate $ getPossibleExpressions nums
+    where   calculate = foldl (\acc (op, x) -> doOp op acc x) (head nums)
             getPossibleExpressions nums = map (\combo -> zip combo (tail nums)) (variateRep (length nums-1) ops)
 
 doOp :: Operation -> Int -> Int -> Int
