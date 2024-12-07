@@ -86,12 +86,12 @@ areAdjacent (x0, y0) (x1, y1) = abs (x0 - x1) <= 1 && abs (y0 - y1) <= 1
 adjacentCoordinates :: (Int, Int) -> [(Int, Int)]
 adjacentCoordinates (x, y) = [(x + dx, y + dy) | dx <- [-1,0,1], dy <- [-1,0,1]]
 
-getAtCoordinate :: [[a]] -> (Int, Int) -> a
-getAtCoordinate grid (x, y) = grid !! y !! x
+atCoordinate :: [[a]] -> (Int, Int) -> a
+atCoordinate grid (x, y) = grid !! y !! x
 
-maybeGetAtCoordinate :: [[a]] -> (Int, Int) -> Maybe a
-maybeGetAtCoordinate grid (x,y)
-        | isValidCoordinate grid (x,y) = Just (getAtCoordinate grid (x,y))
+maybeAtCoordinate :: [[a]] -> (Int, Int) -> Maybe a
+maybeAtCoordinate grid (x,y)
+        | isValidCoordinate grid (x,y) = Just (atCoordinate grid (x,y))
         | otherwise = Nothing
         
 isValidCoordinate :: [[a]] -> (Int, Int) -> Bool
@@ -99,17 +99,17 @@ isValidCoordinate grid (x,y) = x >= 0 && x < cols && y >= 0 && y < rows
         where rows = length grid
               cols = if rows > 0 then length (head grid) else 0
 
-gridCoordinates :: [[a]] -> [(Int, Int)]
-gridCoordinates grid = [(x, y) | y <- [0..length grid - 1], x <- [0..length (head grid)-1]]
+getCoordinates :: [[a]] -> [(Int, Int)]
+getCoordinates grid = [(x, y) | y <- [0..length grid - 1], x <- [0..length (head grid)-1]]
 
 -- coordinates (bytestrings)
 
-getAtCoordinateBS :: [B.ByteString] -> (Int, Int) -> Char
-getAtCoordinateBS grid (x, y) = BC.index (grid !! y) x
+atCoordinateBS :: [B.ByteString] -> (Int, Int) -> Char
+atCoordinateBS grid (x, y) = BC.index (grid !! y) x
 
-maybeGetAtCoordinateBS :: [B.ByteString] -> (Int, Int) -> Maybe Char
-maybeGetAtCoordinateBS grid (x, y)
-    | isValidCoordinateBS grid (x, y) = Just (getAtCoordinateBS grid (x, y))
+maybeAtCoordinateBS :: [B.ByteString] -> (Int, Int) -> Maybe Char
+maybeAtCoordinateBS grid (x, y)
+    | isValidCoordinateBS grid (x, y) = Just (atCoordinateBS grid (x, y))
     | otherwise = Nothing
 
 isValidCoordinateBS :: [B.ByteString] -> (Int, Int) -> Bool
@@ -118,11 +118,11 @@ isValidCoordinateBS grid (x, y) = x >= 0 && x < cols && y >= 0 && y < rows
     rows = length grid
     cols = if rows > 0 then BC.length (head grid) else 0
 
-gridCoordinatesBS :: [B.ByteString] -> [(Int, Int)]
-gridCoordinatesBS grid = [(x, y) | y <- [0..length grid - 1], x <- [0..BC.length (head grid) - 1]]
+getCoordinatesBS :: [B.ByteString] -> [(Int, Int)]
+getCoordinatesBS grid = [(x, y) | y <- [0..length grid - 1], x <- [0..BC.length (head grid) - 1]]
 
 filterCoordinatesBS :: [B.ByteString] -> [Char] -> [(Int, Int)]
-filterCoordinatesBS grid elems = filter (\(x, y) -> getAtCoordinateBS grid (x, y) `elem` elems) $ gridCoordinatesBS grid
+filterCoordinatesBS grid elems = filter (\(x, y) -> atCoordinateBS grid (x, y) `elem` elems) $ getCoordinatesBS grid
 
 -- Bits
 
