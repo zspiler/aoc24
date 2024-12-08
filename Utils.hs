@@ -102,6 +102,12 @@ isValidCoordinate grid (x,y) = x >= 0 && x < cols && y >= 0 && y < rows
 getCoordinates :: [[a]] -> [(Int, Int)]
 getCoordinates grid = [(x, y) | y <- [0..length grid - 1], x <- [0..length (head grid)-1]]
 
+filterCoordinates :: [String] -> [Char] -> [(Int, Int)]
+filterCoordinates grid elems = filter (\(x, y) -> atCoordinate grid (x, y) `elem` elems) $ getCoordinates grid
+
+filterCoordinatesBy :: [String] -> (Char -> Bool) -> [(Int, Int)]
+filterCoordinatesBy grid predicate = filter (\(x, y) -> predicate $ atCoordinate grid (x, y)) $ getCoordinates grid
+
 -- 2D lists (bytestrings)
 
 atCoordinateBS :: [B.ByteString] -> (Int, Int) -> Char
