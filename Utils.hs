@@ -78,6 +78,9 @@ removeElementAt removeIndex s = map (s !!) $ filter (/= removeIndex) (indices s)
 isSorted :: (Ord a) => [a] -> Bool
 isSorted s = s `elem` [sort s, reverse $ sort s]
 
+updateAtIndex :: Int -> a -> [a] -> [a]
+updateAtIndex idx newVal xs = take idx xs ++ [newVal] ++ drop (idx + 1) xs
+
 -- 2D lists
 
 areAdjacent :: (Int, Int) -> (Int, Int) -> Bool
