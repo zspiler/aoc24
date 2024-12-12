@@ -14,12 +14,19 @@ main = do
     let grid = map (map (\c -> readInt [c])) $ lines contents
     let allStarts = filterCoordinatesBy grid (==0)
     let allEnds = filterCoordinatesBy grid (==9)
+    
     print $ sum $ map (\start -> trailHeadScore grid start allEnds) allStarts
+    print $ sum $ map (\start -> trailHeadScore2 grid start allEnds) allStarts
 
 trailHeadScore :: Grid -> (Int, Int) -> [(Int, Int)] -> Int
 trailHeadScore grid (x, y) ends = length $ nub $ filter (`elem` ends) lastNodesInPaths
     where
         lastNodesInPaths = map last allPaths
+        allPaths = nub $ dfs grid (x,y) []
+
+trailHeadScore2 :: Grid -> (Int, Int) -> [(Int, Int)] -> Int
+trailHeadScore2 grid (x, y) ends = length $ nub $ filter (\path -> last path `elem` ends) allPaths
+    where
         allPaths = nub $ dfs grid (x,y) []
 
 dfs :: Grid -> (Int, Int) -> [Path] -> [Path]
