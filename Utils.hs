@@ -87,7 +87,7 @@ areAdjacent :: (Int, Int) -> (Int, Int) -> Bool
 areAdjacent (x0, y0) (x1, y1) = abs (x0 - x1) <= 1 && abs (y0 - y1) <= 1
 
 adjacentCoordinates :: (Int, Int) -> [(Int, Int)]
-adjacentCoordinates (x, y) = [(x + dx, y + dy) | dx <- [-1,0,1], dy <- [-1,0,1]]
+adjacentCoordinates (x, y) = [(x + dx, y + dy) | dx <- [-1,0,1], dy <- [-1,0,1], dx /= 0 || dy /= 0]
 
 atCoordinate :: [[a]] -> (Int, Int) -> a
 atCoordinate grid (x, y) = grid !! y !! x
@@ -96,7 +96,7 @@ maybeAtCoordinate :: [[a]] -> (Int, Int) -> Maybe a
 maybeAtCoordinate grid (x,y)
         | isValidCoordinate grid (x,y) = Just (atCoordinate grid (x,y))
         | otherwise = Nothing
-        
+
 isValidCoordinate :: [[a]] -> (Int, Int) -> Bool
 isValidCoordinate grid (x,y) = x >= 0 && x < cols && y >= 0 && y < rows
         where rows = length grid
