@@ -81,6 +81,11 @@ isSorted s = s `elem` [sort s, reverse $ sort s]
 updateAtIndex :: Int -> a -> [a] -> [a]
 updateAtIndex idx newVal xs = take idx xs ++ [newVal] ++ drop (idx + 1) xs
 
+updateAtCoordinate :: (Int, Int) -> a -> [[a]] -> [[a]]
+updateAtCoordinate (x, y) newVal xss = updateAtIndex y newRow xss
+  where
+    newRow = updateAtIndex x newVal (xss !! y)
+    
 -- 2D lists
 
 areAdjacent :: (Int, Int) -> (Int, Int) -> Bool
